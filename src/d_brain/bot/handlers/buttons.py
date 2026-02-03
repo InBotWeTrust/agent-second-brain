@@ -4,7 +4,7 @@ from aiogram import F, Router
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
-from d_brain.bot.states import DoCommandState
+from d_brain.bot.states import DoCommandState, StrategyState
 
 router = Router(name="buttons")
 
@@ -41,6 +41,14 @@ async def btn_do(message: Message, state: FSMContext) -> None:
         "🎯 <b>Что сделать?</b>\n\n"
         "Отправь голосовое или текстовое сообщение с запросом."
     )
+
+
+@router.message(F.text == "🎯 Стратегия")
+async def btn_strategy(message: Message, state: FSMContext) -> None:
+    """Handle Strategy button."""
+    from d_brain.bot.handlers.strategy import cmd_strategy
+
+    await cmd_strategy(message, state)
 
 
 @router.message(F.text == "❓ Помощь")
