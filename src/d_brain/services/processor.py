@@ -214,7 +214,6 @@ CRITICAL OUTPUT FORMAT:
                 [
                     "claude",
                     "--print",
-                    "--dangerously-skip-permissions",
                     "--mcp-config",
                     str(self._mcp_config_path),
                     "-p",
@@ -318,7 +317,6 @@ EXECUTION:
                 [
                     "claude",
                     "--print",
-                    "--dangerously-skip-permissions",
                     "--mcp-config",
                     str(self._mcp_config_path),
                     "-p",
@@ -454,7 +452,6 @@ CRITICAL OUTPUT FORMAT:
                 [
                     "claude",
                     "--print",
-                    "--dangerously-skip-permissions",
                     "--mcp-config",
                     str(self._mcp_config_path),
                     "-p",
@@ -530,7 +527,6 @@ CRITICAL OUTPUT FORMAT:
                 [
                     "claude",
                     "--print",
-                    "--dangerously-skip-permissions",
                     "--mcp-config",
                     str(self._mcp_config_path),
                     "-p",

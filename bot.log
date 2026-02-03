@@ -1,0 +1,13 @@
+2026-02-03 21:18:54,412 - __main__ - INFO - d-brain starting...
+2026-02-03 21:18:54,413 - __main__ - INFO - Vault path: vault
+2026-02-03 21:18:54,413 - __main__ - INFO - Allowed users: [432014500]
+2026-02-03 21:18:54,589 - d_brain.bot.main - INFO - Starting bot polling...
+2026-02-03 21:18:54,590 - aiogram.dispatcher - INFO - Start polling
+2026-02-03 21:18:54,636 - aiogram.dispatcher - INFO - Run polling for bot @egorgumenyuk_bot id=790206946 - 'Второй Мозг'
+2026-02-03 21:19:18,699 - d_brain.bot.handlers.strategy - INFO - Strategy command triggered by user 432014500
+2026-02-03 21:20:48,889 - aiogram.event - INFO - Update id=850186248 is handled. Duration 90192 ms by bot id=790206946
+2026-02-03 21:21:17,153 - aiogram.event - INFO - Update id=850186249 is handled. Duration 41 ms by bot id=790206946
+2026-02-03 21:21:31,435 - aiogram.event - INFO - Update id=850186250 is handled. Duration 111 ms by bot id=790206946
+2026-02-03 21:21:36,042 - d_brain.bot.handlers.weekly - INFO - Weekly digest triggered by user 432014500
+2026-02-03 21:22:09,471 - d_brain.services.processor - INFO - Weekly summary saved to vault/summaries/2026-W06-summary.md
+2026-02-03 21:22:09,472 - d_brain.services.processor - INFO - Updated MOC-weekly.md with link to 2026-W06-summary
