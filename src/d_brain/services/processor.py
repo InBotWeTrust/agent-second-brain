@@ -75,6 +75,32 @@ class ClaudeProcessor:
 
         return "\n\n".join(context_parts)
 
+    def _load_session_log(self) -> str:
+        """Load strategy session dialog log."""
+        log_path = self.vault_path / "strategy" / "session-log.md"
+        if log_path.exists():
+            return log_path.read_text().strip()
+        return ""
+
+    def _append_to_session_log(self, role: str, text: str) -> None:
+        """Append message to strategy session log.
+
+        Args:
+            role: USER or COACH
+            text: Message text
+        """
+        from datetime import datetime
+
+        strategy_dir = self.vault_path / "strategy"
+        strategy_dir.mkdir(exist_ok=True)
+        log_path = strategy_dir / "session-log.md"
+
+        timestamp = datetime.now().strftime("%H:%M")
+        entry = f"\n## {timestamp} {role}\n{text}\n"
+
+        with log_path.open("a", encoding="utf-8") as f:
+            f.write(entry)
+
     def _get_session_context(self, user_id: int) -> str:
         """Get today's session context for Claude.
 
@@ -357,8 +383,8 @@ EXECUTION:
     ) -> dict[str, Any]:
         """Execute strategy session step with Claude.
 
-        Each call is stateless — Claude reads strategy/progress.md
-        to know current step and continues from there.
+        Dialog history is persisted in strategy/session-log.md to maintain
+        context across stateless Claude CLI calls.
 
         Args:
             user_prompt: User's response (None = initial/continue)
@@ -379,7 +405,12 @@ EXECUTION:
                 "processed_entries": 0,
             }
 
+        # Save user message to session log BEFORE calling Claude
+        if user_prompt:
+            self._append_to_session_log("USER", user_prompt)
+
         strategy_context = self._load_strategy_context()
+        session_log = self._load_session_log()
         todoist_ref = self._load_todoist_reference()
         session_context = self._get_session_context(user_id)
 
@@ -397,11 +428,11 @@ EXECUTION:
 {user_prompt}
 
 Continue the strategy session — respond to the user's input.
-Read strategy/progress.md to know current step and sub-step."""
+Use SESSION LOG below for full dialog context."""
         else:
             user_section = """No user message — session start or resume.
-Read strategy/progress.md and either:
-- Welcome the user (if no progress file)
+Read strategy/progress.md and SESSION LOG, then either:
+- Welcome the user (if no progress/log)
 - Continue from where we left off (show current step context)"""
 
         prompt = f"""Ты — стратегический коуч d-brain. Сегодня {today}.
@@ -413,6 +444,10 @@ Read strategy/progress.md and either:
 === STRATEGY DATA (completed steps) ===
 {strategy_context if strategy_context else "No strategy files yet — first session."}
 === END STRATEGY DATA ===
+
+=== SESSION LOG (full dialog history) ===
+{session_log if session_log else "No session log yet — first message."}
+=== END SESSION LOG ===
 
 === CURRENT GOALS ===
 {goals_context if goals_context else "Goals templates are empty — strategy will fill them."}
@@ -431,9 +466,9 @@ CRITICAL MCP RULE:
 {user_section}
 
 CRITICAL RULES:
-1. Read strategy/progress.md FIRST to know current step
+1. Read SESSION LOG to understand full dialog context
 2. Ask 1-2 questions MAX per response — NEVER more
-3. Save completed steps to vault IMMEDIATELY
+3. Save completed data to about.md / strategy files IMMEDIATELY
 4. Update strategy/progress.md after each step completion
 5. Log to daily/{today}.md
 
@@ -441,7 +476,14 @@ CRITICAL OUTPUT FORMAT:
 - Return ONLY raw HTML for Telegram (parse_mode=HTML)
 - NO markdown: no **, no ##, no ```, no tables, no -
 - Allowed tags: <b>, <i>, <code>, <s>, <u>, <a>
-- Max 4096 characters"""
+- Max 4096 characters
+
+RESPONSE STYLE:
+- НИКОГДА не упоминай названия файлов (about.md, progress.md и т.д.) — пользователю это не нужно
+- Если хочешь показать свой контекст/мысли — оберни в <i>курсив</i> в начале ответа (1-2 предложения макс)
+- Пример: <i>Вижу, мы на этапе знакомства...</i>
+- Основной ответ — без курсива, дружелюбно и по делу
+- Веди себя как живой коуч, а не как программа"""
 
         try:
             env = os.environ.copy()
@@ -472,8 +514,14 @@ CRITICAL OUTPUT FORMAT:
                     "processed_entries": 0,
                 }
 
+            output = result.stdout.strip()
+
+            # Save Claude's response to session log AFTER getting it
+            if output:
+                self._append_to_session_log("COACH", output)
+
             return {
-                "report": result.stdout.strip(),
+                "report": output,
                 "processed_entries": 1,
             }
 

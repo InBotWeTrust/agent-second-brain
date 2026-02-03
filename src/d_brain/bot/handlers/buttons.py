@@ -4,6 +4,7 @@ from aiogram import F, Router
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
+from d_brain.bot.keyboards import get_main_keyboard
 from d_brain.bot.states import DoCommandState, StrategyState
 
 router = Router(name="buttons")
@@ -57,3 +58,14 @@ async def btn_help(message: Message) -> None:
     from d_brain.bot.handlers.commands import cmd_help
 
     await cmd_help(message)
+
+
+@router.message(F.text == "🔙 Вернуться в меню")
+async def btn_back_to_menu(message: Message, state: FSMContext) -> None:
+    """Handle Back to Menu button - exit strategy session."""
+    await state.clear()
+    await message.answer(
+        "👋 Стратегическая сессия приостановлена.\n"
+        "Напиши /strategy когда захочешь продолжить.",
+        reply_markup=get_main_keyboard(),
+    )

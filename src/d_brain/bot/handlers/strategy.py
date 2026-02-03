@@ -9,6 +9,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
 from d_brain.bot.formatters import format_process_report
+from d_brain.bot.keyboards import get_main_keyboard, get_strategy_keyboard
 from d_brain.bot.states import StrategyState
 from d_brain.config import get_settings
 from d_brain.services.processor import ClaudeProcessor
@@ -27,6 +28,13 @@ async def cmd_strategy(message: Message, state: FSMContext) -> None:
     # Set FSM state - stay in strategy mode
     await state.set_state(StrategyState.in_session)
 
+    # Show strategy keyboard with only "back to menu" button
+    await message.answer(
+        "🎯 <b>Стратегическая сессия</b>\n\n"
+        "Отправляй голосовые или текстовые сообщения.",
+        reply_markup=get_strategy_keyboard(),
+    )
+
     # First call - no user input, just "continue from where I left off"
     await run_strategy(message, user_input=None, user_id=user_id)
 
@@ -39,12 +47,16 @@ async def handle_strategy_input(
     user_id = message.from_user.id if message.from_user else 0
     user_input = None
 
-    # Handle /exit to leave strategy mode
-    if message.text and message.text.strip().lower() in ("/exit", "/stop", "/cancel"):
+    # Handle exit button or commands
+    if message.text and (
+        message.text == "🔙 Вернуться в меню"
+        or message.text.strip().lower() in ("/exit", "/stop", "/cancel")
+    ):
         await state.clear()
         await message.answer(
             "👋 Стратегическая сессия приостановлена.\n"
-            "Напиши /strategy когда захочешь продолжить."
+            "Напиши /strategy когда захочешь продолжить.",
+            reply_markup=get_main_keyboard(),
         )
         return
 
@@ -100,7 +112,19 @@ async def run_strategy(
     user_id: int = 0,
 ) -> None:
     """Run strategy processing with Claude."""
-    status_msg = await message.answer("⏳ Думаю...")
+    # Rotating status messages
+    statuses = [
+        "⏳ Думаю...",
+        "🧠 Анализирую...",
+        "📝 Формулирую...",
+        "🔍 Изучаю контекст...",
+        "💭 Размышляю...",
+        "✨ Готовлю ответ...",
+        "🎯 Почти готово...",
+    ]
+    avg_time = 60  # Average processing time in seconds
+
+    status_msg = await message.answer(statuses[0])
 
     settings = get_settings()
     processor = ClaudeProcessor(settings.vault_path, settings.todoist_api_key)
@@ -113,13 +137,23 @@ async def run_strategy(
         )
 
         elapsed = 0
+        status_idx = 0
         while not task.done():
-            await asyncio.sleep(30)
-            elapsed += 30
+            await asyncio.sleep(5)
+            elapsed += 5
             if not task.done():
                 try:
+                    # Rotate through statuses
+                    status_idx = (status_idx + 1) % len(statuses)
+                    status_text = statuses[status_idx]
+
+                    # Add progress estimate (capped at 95%)
+                    progress = min(95, int((elapsed / avg_time) * 100))
+                    time_str = f"{elapsed}s" if elapsed < 60 else f"{elapsed // 60}m {elapsed % 60}s"
+
                     await status_msg.edit_text(
-                        f"⏳ Думаю... ({elapsed // 60}m {elapsed % 60}s)"
+                        f"{status_text}\n<i>{progress}% • {time_str}</i>",
+                        parse_mode="HTML",
                     )
                 except Exception:
                     pass

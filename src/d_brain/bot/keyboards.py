@@ -17,3 +17,11 @@ def get_main_keyboard() -> ReplyKeyboardMarkup:
     builder.button(text="❓ Помощь")
     builder.adjust(3, 3)  # 3 in first row, 3 in second
     return builder.as_markup(resize_keyboard=True, is_persistent=True)
+
+
+def get_strategy_keyboard() -> ReplyKeyboardMarkup:
+    """Keyboard for strategy session - only exit button."""
+    builder = ReplyKeyboardBuilder()
+    builder.button(text="🔙 Вернуться в меню")
+    builder.adjust(1)
+    return builder.as_markup(resize_keyboard=True, is_persistent=True)
