@@ -66,3 +66,38 @@
 2026-02-04 00:18:15,454 - aiogram.event - INFO - Update id=850186333 is handled. Duration 40321 ms by bot id=790206946
 2026-02-04 00:18:30,705 - aiogram.event - INFO - Update id=850186334 is handled. Duration 23 ms by bot id=790206946
 2026-02-04 00:18:35,466 - d_brain.bot.handlers.process - INFO - Process command triggered by user 432014500
+2026-02-04 00:20:35,627 - d_brain.services.git - INFO - Committed: chore: process daily 2026-02-04
+2026-02-04 00:20:36,516 - d_brain.services.git - INFO - Pushed to remote
+2026-02-04 00:20:36,542 - aiogram.event - INFO - Update id=850186335 is handled. Duration 121077 ms by bot id=790206946
+2026-02-04 04:11:02,385 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramRetryAfter: Telegram server says - Flood control exceeded on method 'GetUpdates'. Retry in 5 seconds.
+Original description: Too Many Requests: retry after 5
+(background on this error at: https://core.telegram.org/bots/faq#my-bot-is-hitting-limits-how-do-i-avoid-this)
+2026-02-04 04:11:02,385 - aiogram.dispatcher - WARNING - Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 790206946)
+2026-02-04 04:11:03,389 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramRetryAfter: Telegram server says - Flood control exceeded on method 'GetUpdates'. Retry in 5 seconds.
+Original description: Too Many Requests: retry after 5
+(background on this error at: https://core.telegram.org/bots/faq#my-bot-is-hitting-limits-how-do-i-avoid-this)
+2026-02-04 04:11:03,389 - aiogram.dispatcher - WARNING - Sleep for 1.346805 seconds and try again... (tryings = 1, bot id = 790206946)
+2026-02-04 04:11:04,741 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramRetryAfter: Telegram server says - Flood control exceeded on method 'GetUpdates'. Retry in 5 seconds.
+Original description: Too Many Requests: retry after 5
+(background on this error at: https://core.telegram.org/bots/faq#my-bot-is-hitting-limits-how-do-i-avoid-this)
+2026-02-04 04:11:04,741 - aiogram.dispatcher - WARNING - Sleep for 1.654830 seconds and try again... (tryings = 2, bot id = 790206946)
+2026-02-04 04:11:09,065 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramServerError: Telegram server says - Bad Gateway
+2026-02-04 04:11:09,065 - aiogram.dispatcher - WARNING - Sleep for 2.202615 seconds and try again... (tryings = 3, bot id = 790206946)
+2026-02-04 04:11:11,282 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramServerError: Telegram server says - Bad Gateway
+2026-02-04 04:11:11,282 - aiogram.dispatcher - WARNING - Sleep for 2.912443 seconds and try again... (tryings = 4, bot id = 790206946)
+2026-02-04 04:11:14,203 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramServerError: Telegram server says - Bad Gateway
+2026-02-04 04:11:14,203 - aiogram.dispatcher - WARNING - Sleep for 3.953036 seconds and try again... (tryings = 5, bot id = 790206946)
+2026-02-04 04:11:18,164 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramServerError: Telegram server says - Bad Gateway
+2026-02-04 04:11:18,164 - aiogram.dispatcher - WARNING - Sleep for 4.889429 seconds and try again... (tryings = 6, bot id = 790206946)
+2026-02-04 04:11:23,063 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramServerError: Telegram server says - Bad Gateway
+2026-02-04 04:11:23,064 - aiogram.dispatcher - WARNING - Sleep for 4.916541 seconds and try again... (tryings = 7, bot id = 790206946)
+2026-02-04 04:12:38,465 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2026-02-04 04:12:38,465 - aiogram.dispatcher - WARNING - Sleep for 4.902245 seconds and try again... (tryings = 8, bot id = 790206946)
+2026-02-04 04:13:53,433 - aiogram.dispatcher - ERROR - Failed to fetch updates - TelegramNetworkError: HTTP Client says - Request timeout error
+2026-02-04 04:13:53,433 - aiogram.dispatcher - WARNING - Sleep for 4.925876 seconds and try again... (tryings = 9, bot id = 790206946)
+2026-02-04 04:14:08,372 - aiogram.dispatcher - INFO - Connection established (tryings = 10, bot id = 790206946)
+2026-02-04 11:07:00,608 - aiogram.event - INFO - Update id=850186336 is handled. Duration 103 ms by bot id=790206946
+2026-02-04 11:08:16,280 - aiogram.event - INFO - Update id=850186337 is handled. Duration 30091 ms by bot id=790206946
+2026-02-04 11:08:22,621 - aiogram.event - INFO - Update id=850186338 is handled. Duration 51 ms by bot id=790206946
+2026-02-04 11:08:29,206 - d_brain.bot.handlers.weekly - INFO - Weekly digest triggered by user 432014500
+2026-02-04 11:09:01,554 - d_brain.services.processor - INFO - Weekly summary saved to vault/summaries/2026-W06-summary.md
